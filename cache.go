@@ -1,14 +1,20 @@
 package main
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type Key string
+
+const _defaultCapacity = 10
 
 type Cache interface {
 	Set(key Key, value interface{}) bool
 	Get(key Key) (interface{}, bool)
 	Clear()
 	PrintQueue()
+	PrintInnerMap()
 }
 
 type lruCache struct {
@@ -79,7 +85,15 @@ func (l *lruCache) PrintQueue() {
 	l.queue.Print()
 }
 
+func (l *lruCache) PrintInnerMap() {
+	fmt.Println(l.items)
+}
+
 func NewCache(capacity int) Cache {
+	if capacity <= 0 {
+		capacity = _defaultCapacity
+	}
+
 	return &lruCache{
 		capacity: capacity,
 		queue:    NewList(),

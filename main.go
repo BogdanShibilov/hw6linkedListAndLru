@@ -1,20 +1,13 @@
 package main
 
 func main() {
-	l1 := NewList()
+	c := NewCache(-1)
 
-	l1.PushFront(10) // [10]
-	l1.PushFront(20) // [20 10]
-	l1.PushFront(30) // [30 20 10]
+	_ = c.Set("aaa", 100)
+	_ = c.Set("bbb", 200)
+	_ = c.Set("ccc", 300)
+	_ = c.Set("ddd", 400)
+	_, _ = c.Get("bbb")
 
-	l1.Print() // Вывод должен быть 30 20 10
-
-	l2 := NewList()
-
-	l2.PushBack(10) // [10]
-	l2.PushBack(20) // [10 20]
-	l2.PushBack(30) // [10 20 30]
-
-	l2.Print() // Вывод должен быть 10 20 30
-
+	c.PrintQueue()
 }
