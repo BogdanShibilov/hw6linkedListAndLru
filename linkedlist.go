@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type List interface {
 	Len() int
 	Front() *ListItem
@@ -52,8 +54,8 @@ func (l *LinkedList) pushFront(newItem *ListItem) {
 		l.frontItem = newItem
 		l.backItem = newItem
 	} else {
-		l.frontItem.Next = newItem
-		newItem.Prev = l.frontItem
+		l.frontItem.Prev = newItem
+		newItem.Next = l.frontItem
 		l.frontItem = newItem
 	}
 }
@@ -61,17 +63,21 @@ func (l *LinkedList) pushFront(newItem *ListItem) {
 func (l *LinkedList) PushBack(value any) *ListItem {
 	newItem := &ListItem{Value: value}
 
+	l.pushBack(newItem)
+
+	l.length++
+	return newItem
+}
+
+func (l *LinkedList) pushBack(newItem *ListItem) {
 	if l.length == 0 {
 		l.frontItem = newItem
 		l.backItem = newItem
 	} else {
-		l.backItem.Prev = newItem
-		newItem.Next = l.backItem
+		l.backItem.Next = newItem
+		newItem.Prev = l.backItem
 		l.backItem = newItem
 	}
-
-	l.length++
-	return newItem
 }
 
 func (l *LinkedList) Remove(i *ListItem) {
@@ -79,11 +85,11 @@ func (l *LinkedList) Remove(i *ListItem) {
 		l.Clear()
 		return
 	} else if l.frontItem == i {
-		l.frontItem.Prev.Next = nil
-		l.frontItem = l.frontItem.Prev
+		l.frontItem.Next.Prev = nil
+		l.frontItem = l.frontItem.Next
 	} else if l.backItem == i {
-		l.backItem.Next.Prev = nil
-		l.backItem = l.backItem.Next
+		l.backItem.Prev.Next = nil
+		l.backItem = l.backItem.Prev
 	} else {
 		i.Prev.Next = i.Next
 		i.Next.Prev = i.Prev
@@ -94,6 +100,7 @@ func (l *LinkedList) Remove(i *ListItem) {
 
 func (l *LinkedList) MoveToFront(i *ListItem) {
 	l.Remove(i)
+	i.Prev = nil
 	l.length++
 	l.pushFront(i)
 }
@@ -102,4 +109,12 @@ func (l *LinkedList) Clear() {
 	l.frontItem = nil
 	l.backItem = nil
 	l.length = 0
+}
+
+func (l *LinkedList) Print() {
+	fmt.Print("Front ")
+	for item := l.Back(); item != nil; item = item.Prev {
+		fmt.Printf("%v ", item.Value)
+	}
+	fmt.Print(" Back\n")
 }
