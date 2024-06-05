@@ -8,6 +8,7 @@ type Cache interface {
 	Set(key Key, value interface{}) bool
 	Get(key Key) (interface{}, bool)
 	Clear()
+	PrintQueue()
 }
 
 type lruCache struct {
@@ -72,6 +73,10 @@ func (l *lruCache) Get(key Key) (interface{}, bool) {
 func (l *lruCache) Clear() {
 	l.items = make(map[Key]*ListItem)
 	l.queue = NewList()
+}
+
+func (l *lruCache) PrintQueue() {
+	l.queue.Print()
 }
 
 func NewCache(capacity int) Cache {

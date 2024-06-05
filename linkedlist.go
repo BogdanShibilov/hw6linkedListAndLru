@@ -10,6 +10,7 @@ type List interface {
 	PushBack(v interface{}) *ListItem
 	Remove(i *ListItem)
 	MoveToFront(i *ListItem)
+	Print()
 }
 
 type ListItem struct {
@@ -113,7 +114,7 @@ func (l *LinkedList) Clear() {
 
 func (l *LinkedList) Print() {
 	fmt.Print("Front ")
-	for item := l.Back(); item != nil; item = item.Prev {
+	for item := l.Front(); item != nil; item = item.Next {
 		fmt.Printf("%v ", item.Value)
 	}
 	fmt.Print(" Back\n")
